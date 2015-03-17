@@ -60,7 +60,6 @@ static DictionaryLite* instance;
     for (int i = 0; i < 26; i++) {
         [arr addObject:[NSString stringWithFormat:@"%c.jpg",c]];
         c++;
-        
     }
     _images = arr;
 }

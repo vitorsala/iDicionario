@@ -52,23 +52,25 @@
 
     [self.view addSubview:_lWord];
 
-
+    // Imagem central.
     _imgPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, 1, 1)];
     _imgPhoto.center = self.view.center;
     _imgPhoto.image = [dictionary getImageWithKey:letter];
 
     _imgPhoto.userInteractionEnabled = YES;
-//    UIGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(uiGestureAnimation:)];
-
-//    [_imgPhoto addGestureRecognizer:gesture];
+    UIGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(uiGestureAnimation:)];
+    [_imgPhoto addGestureRecognizer:gesture];
 
     [self.view addSubview:_imgPhoto];
+
 
 
     [self updateView];
 
 }
-
+/**
+ *  Método para atualizar os elementos internos para cada interação.
+ */
 - (void)updateView{
 
     self.title = [NSString stringWithFormat:@"%c",letter];
@@ -94,37 +96,36 @@
     else{
         _next.enabled = YES;
     }
-
-
 }
-
+/**
+ *  Método de animação das views
+ */
 - (void)animate{
     [UIView animateWithDuration:1 animations:^{
         _imgPhoto.transform = CGAffineTransformMakeScale(200, 200);
         _imgPhoto.alpha = 1;
-    } completion:^(BOOL finished) {
-//        _imgPhoto.frame = CGRectApplyAffineTransform(_imgPhoto.bounds, _imgPhoto.transform);
     }];
 }
 
-//- (void)uiGestureAnimation:(UIGestureRecognizer *)recognizer{
-//    if(recognizer.state == UIGestureRecognizerStateRecognized){
-//        [UIView animateWithDuration:2 animations:^{
-//            _imgPhoto.transform = CGAffineTransformMakeScale(1.3, 1.3);
-//        } completion:^(BOOL finished) {
-//            _imgPhoto.frame = CGRectApplyAffineTransform(_imgPhoto.bounds, _imgPhoto.transform);
-//
-//        }];
-//    }
-//    else if(recognizer.state == UIGestureRecognizerStateEnded){
-//        [UIView animateWithDuration:2 animations:^{
-//            _imgPhoto.transform = CGAffineTransformMakeScale(0.7, 0.7);
-//        } completion:^(BOOL finished) {
-//            _imgPhoto.frame = CGRectApplyAffineTransform(_imgPhoto.bounds, _imgPhoto.transform);
-//
-//        }];
-//    }
-//}
+/**
+ *  Observer de gesture.
+ *
+ *  @param recognizer UIGestureRecognizer
+ */
+- (void)uiGestureAnimation:(UILongPressGestureRecognizer *)recognizer{
+    if(recognizer.state == UIGestureRecognizerStateBegan){
+        [UIView animateWithDuration:2 animations:^{
+            _imgPhoto.transform = CGAffineTransformMakeScale(250, 250);
+        }];
+    }
+    else if(recognizer.state == UIGestureRecognizerStateEnded){
+        [UIView animateWithDuration:2 animations:^{
+            _imgPhoto.transform = CGAffineTransformMakeScale(200, 200);
+        }];
+    }
+}
+
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
