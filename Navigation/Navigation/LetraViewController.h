@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DictionaryLite.h"
 #import <AVFoundation/AVFoundation.h>
+#import "DictionaryLite.h"
 
 @interface LetraViewController : UIViewController
 
@@ -23,6 +23,8 @@
 
 @property AVSpeechSynthesizer* synt;
 @property AVSpeechUtterance* utter;
+
+-(instancetype)initWithLetter:(char)currentLetter;
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andLetter:(char)currentLetter;
 

@@ -19,4 +19,6 @@
 
 -(UIImage *)getImageWithKey:(char) c;
 
+-(BOOL)searchWord: (NSString *)word;
+
 @end

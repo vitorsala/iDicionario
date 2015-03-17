@@ -17,6 +17,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    self.view.backgroundColor = [UIColor whiteColor];
+
     char c = 'A';
     UIButton *btn[26];
     for(int i = 0; i < 26; i++){
@@ -30,9 +33,17 @@
         c++;
     }
 
-    UISearchBar *search = [[UISearchBar alloc]initWithFrame:CGRectMake(5, 500, self.view.frame.size.width-10, 50)];
-    search.delegate = self;
-    [self.view addSubview:search];
+    _search = [[UISearchBar alloc]initWithFrame:CGRectMake(5, 300, self.view.frame.size.width-10, 50)];
+    _search.delegate = self;
+    [self.view addSubview:_search];
+
+    _lblError = [[UILabel alloc] initWithFrame:CGRectMake(0, 225, self.view.frame.size.width, 50)];
+    _lblError.textAlignment = NSTextAlignmentCenter;
+    _lblError.textColor = [UIColor colorWithRed:1 green:0.2 blue:0.2 alpha:1];
+    _lblError.font = [UIFont fontWithName:@"Arial-BoldMT" size:16];
+
+    [self.view addSubview:_lblError];
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -43,16 +54,41 @@
 - (void)buttonPressed:(id)sender{
     UIButton *btn = (UIButton *)sender;
     char c = [btn.titleLabel.text characterAtIndex:0];
-    LetraViewController *vc = [[LetraViewController alloc]initWithNibName:nil bundle:nil andLetter:c];
+    LetraViewController *vc = [[LetraViewController alloc]initWithLetter:c];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+}
 
 #pragma mark - SearchBar Delegate
 
 -(void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-//    NSString *searchString = searchBar.text;
-//    DictionaryLite *dic = [DictionaryLite sharedInstance];
+    [self.view endEditing:YES];
+    NSString *searchString = searchBar.text;
+    DictionaryLite *dic = [DictionaryLite sharedInstance];
+    
+    if([dic searchWord:searchString]){
+        searchString = [searchString uppercaseString];
+        LetraViewController *vc = [[LetraViewController alloc]initWithLetter:[searchString characterAtIndex:0]];
+        [self.navigationController pushViewController:vc animated:YES];
+
+    }
+
+    else{
+        float intensity = 5;
+        CABasicAnimation *shake = [CABasicAnimation animationWithKeyPath:@"position.x"];
+        [shake setDuration:0.06];
+        [shake setRepeatCount:2];
+        [shake setAutoreverses:YES];
+        [shake setFromValue:[NSNumber numberWithFloat:_search.center.x - intensity]];
+        [shake setToValue:[NSNumber numberWithFloat:_search.center.x + intensity]];
+
+        [_search.layer addAnimation:shake forKey:@"test"];
+        
+        _lblError.text = @"Nenhuma palavra encontrada";
+    }
 
 }
 

@@ -75,14 +75,17 @@ static DictionaryLite* instance;
     return img;
 }
 
--(NSString *)searchWord: (NSString *)word{
-    if(word){
-        int i = [word characterAtIndex:0];
-        if([_dictionary objectAtIndex:i]){
-            
+-(BOOL)searchWord: (NSString *)word{
+    if(word || ![word isEqualToString:@""]){   // se palavra não for nulo
+        word = [word lowercaseString];
+        int i = [word characterAtIndex:0]-'a';
+        NSString *string = [_dictionary objectAtIndex:i];
+        string = [string lowercaseString];
+        if([string isEqualToString:word]){
+            return true;
         }
     }
-    return nil;
+    return false;
 }
 
 -(void)placeholderDicitionary{
