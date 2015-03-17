@@ -9,7 +9,6 @@
 #define PI 3.14
 
 #import "LetraViewController.h"
-#import "DictionaryLite.h"
 @interface LetraViewController (){
     char letter;
     DictionaryLite *dictionary;
@@ -44,14 +43,6 @@
              initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(next:)];
     self.navigationItem.rightBarButtonItem=_next;
 
-    // Set up
-    //    _lLetter = [[UILabel alloc]initWithFrame:CGRectMake(50, self.view.center.y, self.view.bounds.size.width-10, 40)];
-    _lWord = [[UILabel alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height-80, self.view.bounds.size.width, 40)];
-    _lWord.textAlignment = NSTextAlignmentCenter;
-    _lWord.text = [dictionary getWordWithKey:letter];
-
-    [self.view addSubview:_lWord];
-
     // Imagem central.
     _imgPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, 1, 1)];
     _imgPhoto.center = self.view.center;
@@ -63,7 +54,17 @@
 
     [self.view addSubview:_imgPhoto];
 
+    // Botão
+    _botao = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_botao
+        setTitle:@"Play"
+        forState:UIControlStateNormal];
+    _botao.frame = CGRectMake(0, self.view.bounds.size.height-80, self.view.bounds.size.width, 40);
+    [_botao addTarget:self action:@selector(playVoice:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_botao];
 
+    // Setup de sintetizador de voz
+    _synt = [[AVSpeechSynthesizer alloc] init];
 
     [self updateView];
 
@@ -74,8 +75,12 @@
 - (void)updateView{
 
     self.title = [NSString stringWithFormat:@"%c",letter];
+    NSString *text = [dictionary getWordWithKey:letter];
+    [_botao setTitle:text forState:UIControlStateNormal];
 
-    _lWord.text = [dictionary getWordWithKey:letter];
+    _utter = [[AVSpeechUtterance alloc] initWithString: text];
+    _utter.rate = 0.2;
+    _utter.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"pt-BR"];
 
     _imgPhoto.transform = CGAffineTransformIdentity;
     _imgPhoto.alpha = 0;
@@ -107,6 +112,10 @@
     }];
 }
 
+- (void)playVoice:(id)sender{
+    [_synt speakUtterance:_utter];
+}
+
 /**
  *  Observer de gesture.
  *
@@ -114,17 +123,16 @@
  */
 - (void)uiGestureAnimation:(UILongPressGestureRecognizer *)recognizer{
     if(recognizer.state == UIGestureRecognizerStateBegan){
-        [UIView animateWithDuration:2 animations:^{
-            _imgPhoto.transform = CGAffineTransformMakeScale(250, 250);
+        [UIView animateWithDuration:0.5 animations:^{
+            _imgPhoto.transform = CGAffineTransformMakeScale(280, 280);
         }];
     }
     else if(recognizer.state == UIGestureRecognizerStateEnded){
-        [UIView animateWithDuration:2 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             _imgPhoto.transform = CGAffineTransformMakeScale(200, 200);
         }];
     }
 }
-
 
 
 - (void)didReceiveMemoryWarning {

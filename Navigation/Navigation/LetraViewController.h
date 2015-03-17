@@ -7,14 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DictionaryLite.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface LetraViewController : UIViewController
 
 //@property(nonatomic, weak) UILabel* lLetter;
-@property UILabel* lWord;
+@property UIButton* play;
 @property UIImageView* imgPhoto;
 @property UIBarButtonItem* prev;
 @property UIBarButtonItem* next;
+@property UIButton* botao;
+
+@property AVSpeechSynthesizer* synt;
+@property AVSpeechUtterance* utter;
+
 
 -(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andCurrentLetter:(char)currentLetter;
 
