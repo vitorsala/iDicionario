@@ -19,11 +19,11 @@
 @property UIBarButtonItem* next;
 @property UIButton* botao;
 
+@property char letter;
+
 @property AVSpeechSynthesizer* synt;
 @property AVSpeechUtterance* utter;
 
-
--(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andCurrentLetter:(char)currentLetter;
-
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andLetter:(char)currentLetter;
 
 @end

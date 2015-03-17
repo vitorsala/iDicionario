@@ -7,16 +7,15 @@
 //
 
 #import "MackenzieAppDelegate.h"
-#import "LetraViewController.h"
+#import "MainViewController.h"
 
 @implementation MackenzieAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    LetraViewController *viewController = [[LetraViewController alloc]
+    MainViewController *viewController = [[MainViewController alloc]
                                            initWithNibName:nil
-                                           bundle:nil
-                                           andCurrentLetter:'@'];
+                                           bundle:nil];
     
     
     self.navigationController = [[UINavigationController alloc]

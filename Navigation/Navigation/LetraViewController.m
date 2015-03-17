@@ -10,7 +10,6 @@
 
 #import "LetraViewController.h"
 @interface LetraViewController (){
-    char letter;
     DictionaryLite *dictionary;
 }
 
@@ -18,16 +17,17 @@
 
 @implementation LetraViewController
 
--(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andCurrentLetter:(char)currentLetter{
+-(instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil andLetter:(char)currentLetter{
     self = [super init];
     if(self){
-        letter = currentLetter + 1;
+        _letter = currentLetter;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor blackColor];
 
     // Singleton do dicionario.
     dictionary = [DictionaryLite sharedInstance];
@@ -36,7 +36,7 @@
 
     // Adicionando o botão "Voltar" na navbar.
     _prev = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(previous:)];
-    self.navigationItem.leftBarButtonItem=_prev;
+    self.navigationItem.rightBarButtonItem=_prev;
 
     // Adicionando o botão "próximo" na navbar.
     _next = [[UIBarButtonItem alloc]
@@ -46,19 +46,18 @@
     // Imagem central.
     _imgPhoto = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, 1, 1)];
     _imgPhoto.center = self.view.center;
-    _imgPhoto.image = [dictionary getImageWithKey:letter];
+    _imgPhoto.image = [dictionary getImageWithKey:_letter];
 
     _imgPhoto.userInteractionEnabled = YES;
-    UIGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(uiGestureAnimation:)];
+    UILongPressGestureRecognizer *gesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(uiGestureAnimation:)];
+    gesture.minimumPressDuration = 0.1;
     [_imgPhoto addGestureRecognizer:gesture];
 
     [self.view addSubview:_imgPhoto];
 
     // Botão
     _botao = [UIButton buttonWithType:UIButtonTypeSystem];
-    [_botao
-        setTitle:@"Play"
-        forState:UIControlStateNormal];
+    [_botao setTitle:@"Play" forState:UIControlStateNormal];
     _botao.frame = CGRectMake(0, self.view.bounds.size.height-80, self.view.bounds.size.width, 40);
     [_botao addTarget:self action:@selector(playVoice:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_botao];
@@ -66,16 +65,14 @@
     // Setup de sintetizador de voz
     _synt = [[AVSpeechSynthesizer alloc] init];
 
-    [self updateView];
-
 }
 /**
  *  Método para atualizar os elementos internos para cada interação.
  */
-- (void)updateView{
+- (void)viewDidAppear{
 
-    self.title = [NSString stringWithFormat:@"%c",letter];
-    NSString *text = [dictionary getWordWithKey:letter];
+    self.title = [NSString stringWithFormat:@"%c",_letter];
+    NSString *text = [dictionary getWordWithKey:_letter];
     [_botao setTitle:text forState:UIControlStateNormal];
 
     _utter = [[AVSpeechUtterance alloc] initWithString: text];
@@ -84,18 +81,18 @@
 
     _imgPhoto.transform = CGAffineTransformIdentity;
     _imgPhoto.alpha = 0;
-    _imgPhoto.image = [dictionary getImageWithKey:letter];
+    _imgPhoto.image = [dictionary getImageWithKey:_letter];
 
     [self animate];
 
-    if(letter == 'A'){
+    if(_letter == 'A'){
         _prev.enabled = NO;
     }
     else{
         _prev.enabled = YES;
     }
 
-    if(letter == 'Z'){
+    if(_letter == 'Z'){
         _next.enabled = NO;
     }
     else{
@@ -143,16 +140,18 @@
 #pragma mark - Navigation
 
 -(void)next:(id)sender {
-    if(letter < 'Z'){
-        letter++;
-        [self updateView];
+//    if(self.navigationController.viewControllers.count >= 3){
+//
+//    }
+    if(_letter < 'Z'){
+
+
     }
 }
 
 -(void)previous:(id)sender {
-    if(letter > 'A'){
-        letter--;
-        [self updateView];
+    if(_letter > 'A'){
+
     }
 
 }

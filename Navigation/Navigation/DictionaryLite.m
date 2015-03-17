@@ -75,7 +75,15 @@ static DictionaryLite* instance;
     return img;
 }
 
-
+-(NSString *)searchWord: (NSString *)word{
+    if(word){
+        int i = [word characterAtIndex:0];
+        if([_dictionary objectAtIndex:i]){
+            
+        }
+    }
+    return nil;
+}
 
 -(void)placeholderDicitionary{
     NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:26];
