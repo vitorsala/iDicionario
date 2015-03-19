@@ -40,6 +40,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    // Setando o objeto atual como root da navigation
+    // Serve para arrumar um bug permitia que o usuário voltar para uma seleção vindo da index.
+    self.navigationController.viewControllers = @[self];
+
     // Configuração do background
     self.view.backgroundColor = [UIColor whiteColor];
 
@@ -117,9 +121,6 @@
  */
 - (void)viewWillAppear:(BOOL)animated{
 
-    // Configuração da tabbar (TENTATIVA)
-    [self.tabBarItem setTitle:[NSString stringWithFormat:@"%c",_letter]];
-
     // Desativando os botões (Serão ativadas no final da animação)
     _prev.enabled = NO;
     _next.enabled = NO;
@@ -138,6 +139,7 @@
     // Executa a animação do início
     [self animate];
 }
+
 /**
  *  Método de animação das views
  */
@@ -232,8 +234,6 @@
     char nextLetter = _letter+1;
     if(nextLetter > 'Z')    nextLetter = 'A';
 
-    self.navigationController.viewControllers = @[self];
-
     [self.navigationController pushViewController:[[LetraViewController alloc] initWithLetter:nextLetter] animated:YES];
 }
 
@@ -246,15 +246,9 @@
     char prevLetter = _letter-1;
     if(prevLetter < 'A')    prevLetter = 'Z';
 
-//    self.navigationController.viewControllers = @[
-//                                                  [[LetraViewController alloc]initWithLetter:_letter+1],
-//                                                  self
-//    ];
-//
-//    [self.navigationController popViewControllerAnimated:YES];
+    self.navigationController.viewControllers = @[[[LetraViewController alloc]initWithLetter:prevLetter],self];
 
-
-    [self.navigationController setViewControllers:@[[[LetraViewController alloc]initWithLetter:_letter-1]] animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
 
 }
 

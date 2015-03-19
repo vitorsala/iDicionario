@@ -28,7 +28,10 @@
     [self.view addSubview:_tableView];
 
     data = [DictionaryLite sharedInstance];
+}
 
+-(void)viewWillAppear:(BOOL)animated{
+    [_tableView reloadData];
 }
 
 #pragma mark - UITableViewDelegate
