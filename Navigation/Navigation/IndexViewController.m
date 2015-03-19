@@ -57,10 +57,11 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 
     char letter = indexPath.row + 'A';
+
     UINavigationController *nav = [self.tabBarController.viewControllers objectAtIndex:0];
-    NSArray *arr = @[[nav.viewControllers objectAtIndex:0]];
-    nav.viewControllers = arr;
+
     [nav pushViewController:[[LetraViewController alloc] initWithLetter:letter] animated:YES];
+
     [self.tabBarController setSelectedIndex:0];
 }
 
