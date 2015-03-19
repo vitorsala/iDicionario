@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "DictionaryLite.h"
+#import "MainViewController.h"
 
 @interface LetraViewController : UIViewController
 //@property(nonatomic, weak) UILabel* lLetter;
@@ -25,6 +26,7 @@
 
 #pragma mark - ToolBar elements
 @property UIBarButtonItem* btnEdit;
+@property UIBarButtonItem* home;
 
 #pragma mark - OutrasPropriedades
 @property char letter;

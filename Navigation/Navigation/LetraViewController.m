@@ -107,7 +107,11 @@
 
     // Elementos da toolbar
     _btnEdit = [[UIBarButtonItem alloc]initWithTitle:@"Editar" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnEdit:)];
-    _toolbar.items = @[_btnEdit];
+    _home = [[UIBarButtonItem alloc] initWithTitle:@"Início" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnHome:)];
+
+    UIBarButtonItem *whitespace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+
+    _toolbar.items = @[_btnEdit,whitespace,_home];
 
     // Setup de sintetizador de voz
     _synt = [[AVSpeechSynthesizer alloc] init];
@@ -178,7 +182,10 @@
             _imgPhoto.transform = CGAffineTransformMakeScale(140, 140);
         }];
     }
-    else if(recognizer.state == UIGestureRecognizerStateEnded){
+    if(recognizer.state == UIGestureRecognizerStateChanged){
+        _imgPhoto.center = [recognizer locationOfTouch:0 inView:self.view];
+    }
+    if(recognizer.state == UIGestureRecognizerStateEnded){
         [UIView animateWithDuration:0.5 animations:^{
             _imgPhoto.transform = CGAffineTransformMakeScale(100, 100);
         }];
@@ -221,6 +228,10 @@
         _txtEdit.hidden = YES;
         _btnEdit.title = @"Editar";
     }
+}
+
+-(void)toolBarBtnHome:sender{
+    [self.navigationController pushViewController:[[MainViewController alloc] init] animated:YES];
 }
 
 #pragma mark - Navigation

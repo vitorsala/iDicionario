@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    self.navigationController.viewControllers = @[self];
+
     self.view.backgroundColor = [UIColor whiteColor];
 
     char c = 'A';
