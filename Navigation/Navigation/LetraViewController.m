@@ -87,14 +87,14 @@
     // Botão (Palavra)
     _palavra = [UIButton buttonWithType:UIButtonTypeSystem];
     [_palavra setTitle:@"Play" forState:UIControlStateNormal];
-    _palavra.frame = CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 40);
+    _palavra.frame = CGRectMake(0, 120, self.view.bounds.size.width, 40);
     _palavra.titleLabel.textAlignment = NSTextAlignmentCenter;
     _palavra.titleLabel.frame = CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 40);
     [_palavra addTarget:self action:@selector(playVoice:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_palavra];
 
     // TextField
-    _txtEdit = [[UITextField alloc]initWithFrame:CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 40)];
+    _txtEdit = [[UITextField alloc]initWithFrame:CGRectMake(0, 120, self.view.bounds.size.width, 40)];
     _txtEdit.hidden = YES;
     _txtEdit.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_txtEdit];
@@ -171,6 +171,12 @@
     [_synt speakUtterance:_utter];
 }
 
+#pragma mark - Gestures
+
+-(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
+    [self.view endEditing:YES];
+}
+
 /**
  *  Observer de gesture.
  *
@@ -226,6 +232,7 @@
         [dictionary changeInfosForLetter:_letter withString:_txtEdit.text andImageNamed:nil];
         _palavra.hidden = NO;
         _txtEdit.hidden = YES;
+        [self.view endEditing:YES];
         _btnEdit.title = @"Editar";
     }
 }
