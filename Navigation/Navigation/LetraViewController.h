@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
+#import <Realm/Realm.h>
 #import "DictionaryLite.h"
 #import "MainViewController.h"
 

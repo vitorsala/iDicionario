@@ -6,13 +6,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "entity/Word.h"
 
 @interface DictionaryLite : NSObject
-@property NSMutableArray *dictionary;
-@property NSMutableArray *images;
+
+#pragma mark - Realm.IO
+@property RLMRealm* realm;
+
 
 +(instancetype)sharedInstance;
-
 
 -(NSString *)getWordWithKey:(char) c;
 
@@ -23,5 +25,7 @@
 -(BOOL)searchWord: (NSString *)word;
 
 -(NSUInteger)dictionaryLength;
+
+
 
 @end
