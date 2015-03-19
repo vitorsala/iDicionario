@@ -23,6 +23,7 @@
 		EB58B8441AB74D5B0069557B /* DictionaryLite.m in Sources */ = {isa = PBXBuildFile; fileRef = EB58B8431AB74D5B0069557B /* DictionaryLite.m */; };
 		EB58B8461AB750E30069557B /* words.csv in Resources */ = {isa = PBXBuildFile; fileRef = EB58B8451AB750E30069557B /* words.csv */; };
 		EB58B8481AB760E00069557B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB58B8471AB760E00069557B /* Images.xcassets */; };
+		EB845A441AB9A6AD00736A87 /* IndexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB845A431AB9A6AD00736A87 /* IndexViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		EB58B8431AB74D5B0069557B /* DictionaryLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DictionaryLite.m; sourceTree = "<group>"; };
 		EB58B8451AB750E30069557B /* words.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = words.csv; sourceTree = "<group>"; };
 		EB58B8471AB760E00069557B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		EB845A421AB9A6AD00736A87 /* IndexViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexViewController.h; sourceTree = "<group>"; };
+		EB845A431AB9A6AD00736A87 /* IndexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndexViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,13 +123,15 @@
 			children = (
 				27156F5B18B76AF50053A99C /* MackenzieAppDelegate.h */,
 				27156F5C18B76AF50053A99C /* MackenzieAppDelegate.m */,
-				27156F5318B76AF50053A99C /* Supporting Files */,
 				EB3075EB1AB885A700D14C59 /* MainViewController.h */,
 				EB3075EC1AB885A700D14C59 /* MainViewController.m */,
 				EB58B83F1AB749830069557B /* LetraViewController.h */,
 				EB58B8401AB749830069557B /* LetraViewController.m */,
+				EB845A421AB9A6AD00736A87 /* IndexViewController.h */,
+				EB845A431AB9A6AD00736A87 /* IndexViewController.m */,
 				EB58B8421AB74D5B0069557B /* DictionaryLite.h */,
 				EB58B8431AB74D5B0069557B /* DictionaryLite.m */,
+				27156F5318B76AF50053A99C /* Supporting Files */,
 				EB58B8451AB750E30069557B /* words.csv */,
 				EB58B8471AB760E00069557B /* Images.xcassets */,
 			);
@@ -264,6 +269,7 @@
 				27156F5918B76AF50053A99C /* main.m in Sources */,
 				EB3075ED1AB885A700D14C59 /* MainViewController.m in Sources */,
 				EB58B8441AB74D5B0069557B /* DictionaryLite.m in Sources */,
+				EB845A441AB9A6AD00736A87 /* IndexViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

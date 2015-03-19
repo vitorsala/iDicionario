@@ -1,4 +1,3 @@
-//
 //  DictionaryLite.h
 //  Navigation
 //
@@ -9,8 +8,8 @@
 #import <Foundation/Foundation.h>
 
 @interface DictionaryLite : NSObject
-@property NSArray *dictionary;
-@property NSArray *images;
+@property NSMutableArray *dictionary;
+@property NSMutableArray *images;
 
 +(instancetype)sharedInstance;
 
@@ -19,6 +18,10 @@
 
 -(UIImage *)getImageWithKey:(char) c;
 
+-(void)changeInfosForLetter:(char)letter withString:(NSString *)string andImageNamed:(NSString *)img;
+
 -(BOOL)searchWord: (NSString *)word;
+
+-(NSUInteger)dictionaryLength;
 
 @end

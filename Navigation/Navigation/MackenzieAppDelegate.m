@@ -16,16 +16,25 @@
     MainViewController *viewController = [[MainViewController alloc]
                                            initWithNibName:nil
                                            bundle:nil];
-    
-    
-    self.navigationController = [[UINavigationController alloc]
-                                 initWithRootViewController:viewController];
+
     self.window = [[UIWindow alloc]
                    initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = self.navigationController;
+
+    self.navigationController = [[UINavigationController alloc]
+                                 initWithRootViewController:viewController];
+
+    IndexViewController* table = [[IndexViewController alloc]init];
+
+    UITabBarController* tabBar = [[UITabBarController alloc]init];
+
+    self.navigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Principal" image:[UIImage imageNamed:@"abc.png"] tag:1];
+    table.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Index" image:[UIImage imageNamed:@"list.png"] tag:2];
+
+    [tabBar setViewControllers:@[self.navigationController, table]];
 
 
-    
+    self.window.rootViewController = tabBar;
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     

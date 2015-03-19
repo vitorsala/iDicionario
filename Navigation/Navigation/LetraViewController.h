@@ -11,14 +11,22 @@
 #import "DictionaryLite.h"
 
 @interface LetraViewController : UIViewController
-
 //@property(nonatomic, weak) UILabel* lLetter;
-@property UIButton* play;
-@property UIImageView* imgPhoto;
+#pragma mark - BotõesDaNavegação
 @property UIBarButtonItem* prev;
 @property UIBarButtonItem* next;
-@property UIButton* botao;
 
+#pragma mark - UI Principal
+@property UIButton* play;
+@property UIImageView* imgPhoto;
+@property UIButton* palavra;
+@property UITextField* txtEdit;
+@property UIToolbar* toolbar;
+
+#pragma mark - ToolBar elements
+@property UIBarButtonItem* btnEdit;
+
+#pragma mark - OutrasPropriedades
 @property char letter;
 
 @property AVSpeechSynthesizer* synt;

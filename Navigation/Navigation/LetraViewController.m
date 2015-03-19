@@ -80,12 +80,30 @@
     [self.view addGestureRecognizer:swipeRight];
     [self.view addGestureRecognizer:swipeLeft];
 
-    // Botão
-    _botao = [UIButton buttonWithType:UIButtonTypeSystem];
-    [_botao setTitle:@"Play" forState:UIControlStateNormal];
-    _botao.frame = CGRectMake(0, self.view.bounds.size.height-80, self.view.bounds.size.width, 40);
-    [_botao addTarget:self action:@selector(playVoice:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_botao];
+    // Botão (Palavra)
+    _palavra = [UIButton buttonWithType:UIButtonTypeSystem];
+    [_palavra setTitle:@"Play" forState:UIControlStateNormal];
+    _palavra.frame = CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 40);
+    _palavra.titleLabel.textAlignment = NSTextAlignmentCenter;
+    _palavra.titleLabel.frame = CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 40);
+    [_palavra addTarget:self action:@selector(playVoice:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:_palavra];
+
+    // TextField
+    _txtEdit = [[UITextField alloc]initWithFrame:CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 40)];
+    _txtEdit.hidden = YES;
+    _txtEdit.textAlignment = NSTextAlignmentCenter;
+    [self.view addSubview:_txtEdit];
+
+    // ToolBar
+    _toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 50)];
+    _toolbar.backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1];
+
+    [self.view addSubview:_toolbar];
+
+    // Elementos da toolbar
+    _btnEdit = [[UIBarButtonItem alloc]initWithTitle:@"Editar" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnEdit:)];
+    _toolbar.items = @[_btnEdit];
 
     // Setup de sintetizador de voz
     _synt = [[AVSpeechSynthesizer alloc] init];
@@ -99,21 +117,25 @@
  */
 - (void)viewWillAppear:(BOOL)animated{
 
+    // Configuração da tabbar (TENTATIVA)
+    [self.tabBarItem setTitle:[NSString stringWithFormat:@"%c",_letter]];
+
+    // Desativando os botões (Serão ativadas no final da animação)
     _prev.enabled = NO;
     _next.enabled = NO;
 
-    self.title = [NSString stringWithFormat:@"%c",_letter];
+    // Set do título
+    self.navigationItem.title = [NSString stringWithFormat:@"%c",_letter];
     NSString *text = [dictionary getWordWithKey:_letter];
-    [_botao setTitle:text forState:UIControlStateNormal];
+    [_palavra setTitle:text forState:UIControlStateNormal];
+    _txtEdit.text = text;
 
-    _utter = [[AVSpeechUtterance alloc] initWithString: text];
-    _utter.rate = 0.2;
-    _utter.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"pt-BR"];
-
+    // Set da imagem
     _imgPhoto.transform = CGAffineTransformIdentity;
     _imgPhoto.alpha = 0;
     _imgPhoto.image = [dictionary getImageWithKey:_letter];
 
+    // Executa a animação do início
     [self animate];
 }
 /**
@@ -136,6 +158,10 @@
  *  @param sender sender
  */
 - (void)playVoice:(id)sender{
+    NSString *text = [dictionary getWordWithKey:_letter];
+    _utter = [[AVSpeechUtterance alloc] initWithString: text];
+    _utter.rate = 0.2;
+    _utter.voice = [AVSpeechSynthesisVoice voiceWithLanguage:@"pt-BR"];
     [_synt speakUtterance:_utter];
 }
 
@@ -176,8 +202,26 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Navigation
+#pragma mark - ToolbarMethods
 
+-(void)toolBarBtnEdit:(id)sender{
+    UIBarButtonItem* btn = sender;
+    if([btn.title isEqualToString:@"Editar"]){
+        _palavra.hidden = YES;
+        _txtEdit.hidden = NO;
+        _btnEdit.title = @"Concluir";
+    }
+    else{
+        [_palavra setTitle:_txtEdit.text forState:UIControlStateNormal];
+//        [_palavra.titleLabel sizeToFit];
+        [dictionary changeInfosForLetter:_letter withString:_txtEdit.text andImageNamed:nil];
+        _palavra.hidden = NO;
+        _txtEdit.hidden = YES;
+        _btnEdit.title = @"Editar";
+    }
+}
+
+#pragma mark - Navigation
 
 /**
  *  Método de navegação (próximo)
@@ -188,12 +232,8 @@
     char nextLetter = _letter+1;
     if(nextLetter > 'Z')    nextLetter = 'A';
 
-    if(self.navigationController.viewControllers.count > 1){
-        NSMutableArray *controllerViews = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
-        [controllerViews replaceObjectAtIndex:0 withObject:[controllerViews objectAtIndex:1]];
-        [controllerViews removeLastObject];
-        self.navigationController.viewControllers = [[NSArray alloc]initWithArray:controllerViews];
-    }
+    self.navigationController.viewControllers = @[self];
+
     [self.navigationController pushViewController:[[LetraViewController alloc] initWithLetter:nextLetter] animated:YES];
 }
 
@@ -206,25 +246,16 @@
     char prevLetter = _letter-1;
     if(prevLetter < 'A')    prevLetter = 'Z';
 
-    NSMutableArray *controllerViews = [[NSMutableArray alloc]initWithArray:self.navigationController.viewControllers];
+//    self.navigationController.viewControllers = @[
+//                                                  [[LetraViewController alloc]initWithLetter:_letter+1],
+//                                                  self
+//    ];
+//
+//    [self.navigationController popViewControllerAnimated:YES];
 
-    if(controllerViews.count > 1){
-        [controllerViews replaceObjectAtIndex:0 withObject:[[LetraViewController alloc] initWithLetter:prevLetter]];
-    }
-    else{
-        [controllerViews addObject:[controllerViews objectAtIndex:0]];
-        [controllerViews replaceObjectAtIndex:0 withObject:[[LetraViewController alloc] initWithLetter:prevLetter]];
-    }
-    self.navigationController.viewControllers = [[NSArray alloc]initWithArray:controllerViews];
-    [self.navigationController popViewControllerAnimated:YES];
-}
-/*
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    [self.navigationController setViewControllers:@[[[LetraViewController alloc]initWithLetter:_letter-1]] animated:YES];
+
 }
-*/
 
 @end

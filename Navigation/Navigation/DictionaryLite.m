@@ -1,4 +1,3 @@
-//
 //  DictionaryLite.m
 //  Navigation
 //
@@ -26,7 +25,7 @@ static DictionaryLite* instance;
  *  Método para preencher o dicionário
  */
 -(void)fillDictionary{
-    _dictionary = @[
+    _dictionary = [[NSMutableArray alloc]initWithArray: @[
         @"Abacaxi",
         @"Banana",
         @"Cacau",
@@ -53,20 +52,24 @@ static DictionaryLite* instance;
         @"Xixá",
         @"Yoshi",
         @"Zebra"
-    ];
+    ]];
 
-    NSMutableArray *arr = [[NSMutableArray alloc]init];
+    _images = [[NSMutableArray alloc]init];
     char c = 'A';
     for (int i = 0; i < 26; i++) {
-        [arr addObject:[NSString stringWithFormat:@"%c.jpg",c]];
+        [_images addObject:[NSString stringWithFormat:@"%c.jpg",c]];
         c++;
     }
-    _images = arr;
+
 }
 
 -(NSString *)getWordWithKey:(char) c{
     int index = (int) c - 'A';
     return [_dictionary objectAtIndex:index];
+}
+
+-(NSUInteger)dictionaryLength{
+    return [_dictionary count];
 }
 
 -(UIImage *)getImageWithKey:(char) c{
@@ -88,6 +91,20 @@ static DictionaryLite* instance;
     return false;
 }
 
+-(void)changeInfosForLetter:(char)letter withString:(NSString *)string andImageNamed:(NSString *)img{
+
+    if(string != nil && ![string isEqualToString:@""]){
+        [_dictionary replaceObjectAtIndex:(int)(letter-'A') withObject:string];
+    }
+    else if(img != nil && ![img isEqualToString:@""]){
+        [_images replaceObjectAtIndex:(int)(letter-'A') withObject:string];
+    }
+
+}
+
+/**
+ *  Dicionário placeholder (caso não haja um definido) [DEBUG]
+ */
 -(void)placeholderDicitionary{
     NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:26];
     NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:26];

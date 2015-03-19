@@ -35,6 +35,7 @@
 
     _search = [[UISearchBar alloc]initWithFrame:CGRectMake(5, 300, self.view.frame.size.width-10, 50)];
     _search.delegate = self;
+    _search.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:_search];
 
     _lblError = [[UILabel alloc] initWithFrame:CGRectMake(0, 225, self.view.frame.size.width, 50)];
