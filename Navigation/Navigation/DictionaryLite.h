@@ -16,6 +16,9 @@
 
 +(instancetype)sharedInstance;
 
+
+#pragma mark - Méotdos do dicinario
+
 -(NSString *)getWordWithKey:(char) c;
 
 -(UIImage *)getImageWithKey:(char) c;
@@ -26,6 +29,8 @@
 
 -(NSUInteger)dictionaryLength;
 
+#pragma mark - Métodos para salvar imagens
 
+-(void)saveImage:(UIImage *)image Named:(NSString*)name;
 
 @end

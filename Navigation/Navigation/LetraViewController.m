@@ -99,6 +99,11 @@
     _txtEdit.textAlignment = NSTextAlignmentCenter;
     [self.view addSubview:_txtEdit];
 
+    // ImagePicker
+    _imgPicker = [[UIImagePickerController alloc] init];
+    _imgPicker.delegate = self;
+    _imgPicker.allowsEditing = YES;
+
     // ToolBar
     _toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 50)];
     _toolbar.backgroundColor = [UIColor colorWithRed:0.6 green:0.6 blue:0.6 alpha:1];
@@ -108,10 +113,12 @@
     // Elementos da toolbar
     _btnEdit = [[UIBarButtonItem alloc]initWithTitle:@"Editar" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnEdit:)];
     _home = [[UIBarButtonItem alloc] initWithTitle:@"Início" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnHome:)];
+    _btnPhoto = [[UIBarButtonItem alloc] initWithTitle:@"Foto" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnPhoto:)];
+    _btnImage = [[UIBarButtonItem alloc] initWithTitle:@"Imagem" style:UIBarButtonItemStyleBordered target:self action:@selector(toolBarBtnPhoto:)];
 
     UIBarButtonItem *whitespace = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
 
-    _toolbar.items = @[_btnEdit,whitespace,_home];
+    _toolbar.items = @[_btnEdit,whitespace,_btnPhoto,_btnImage,whitespace,_home];
 
     // Setup de sintetizador de voz
     _synt = [[AVSpeechSynthesizer alloc] init];
@@ -215,6 +222,37 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - ImagePicker
+
+-(void)toolBarBtnPhoto:(id)sender{
+    UIBarButtonItem* selected = sender;
+    if([selected.title isEqualToString:@"Foto"]){
+
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]){
+            _imgPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        }
+        else{
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Sem câmera" message:nil delegate:nil cancelButtonTitle:@"OK" otherButtonTitles: nil];
+            [alert show];
+        }
+    }
+    if([selected.title isEqualToString:@"Imagem"]){
+        _imgPicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+
+    [self presentViewController:_imgPicker animated:YES completion:nil];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
+    [_imgPicker dismissViewControllerAnimated:YES completion:nil];
+    UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
+    _imgPhoto.image = img;
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{
+    [_imgPicker dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - ToolbarMethods

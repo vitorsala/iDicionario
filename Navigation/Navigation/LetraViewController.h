@@ -12,7 +12,7 @@
 #import "DictionaryLite.h"
 #import "MainViewController.h"
 
-@interface LetraViewController : UIViewController
+@interface LetraViewController : UIViewController <UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 //@property(nonatomic, weak) UILabel* lLetter;
 #pragma mark - BotõesDaNavegação
 @property UIBarButtonItem* prev;
@@ -28,6 +28,11 @@
 #pragma mark - ToolBar elements
 @property UIBarButtonItem* btnEdit;
 @property UIBarButtonItem* home;
+
+#pragma makr - ImagePicker
+@property UIBarButtonItem* btnPhoto;
+@property UIBarButtonItem* btnImage;
+@property UIImagePickerController* imgPicker;
 
 #pragma mark - OutrasPropriedades
 @property char letter;

@@ -21,10 +21,7 @@ static DictionaryLite* instance;
         if(isFirstTime){
             [instance fillDictionary];
             [defaults setObject:[NSNumber numberWithBool:NO] forKey:@"firstTimeRun"];
-
-            NSLog(@"TESTE");
         }
-        NSLog(@"TESTE23");
 
     });
     return instance;
@@ -66,7 +63,7 @@ static DictionaryLite* instance;
     NSMutableArray *images = [[NSMutableArray alloc]init];
     char c = 'A';
     for (int i = 0; i < 26; i++) {
-        [images addObject:[NSString stringWithFormat:@"%c.jpg",c]];
+        [images addObject:[NSString stringWithFormat:@"%c.png",c]];
         c++;
     }
     c = 'A';
@@ -75,6 +72,7 @@ static DictionaryLite* instance;
         Word *word = [[Word alloc]init];
         word.letter = [NSString stringWithFormat:@"%c",c++];
         word.palavra = [dictionary objectAtIndex:i];
+//        word.img = [[NSBundle mainBundle] pathForResource:[images objectAtIndex:i] ofType:@"png"];
         word.img = [images objectAtIndex:i];
 
         [_realm beginWriteTransaction];
@@ -105,12 +103,8 @@ static DictionaryLite* instance;
 
 -(BOOL)searchWord: (NSString *)word{
     if(word || ![word isEqualToString:@""]){   // se palavra não for nulo
-        word = [word lowercaseString];
-        char c = [word characterAtIndex:0];
-        RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"letter='%c'",c]];
-        for(Word *obj in result){
-            if([obj.letter characterAtIndex:0] == c) return true;
-        }
+        RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"palavra CONTAINS '%@\'",word]];
+        return [result firstObject];
     }
     return false;
 }
@@ -128,6 +122,15 @@ static DictionaryLite* instance;
     }
 
 }
+
+
+-(void)saveImage:(UIImage *)image Named:(NSString*)name{
+    name = [NSString stringWithFormat:@"%@.png", name];
+
+    
+	
+}
+
 
 /**
  *  Dicionário placeholder (caso não haja um definido) [DEBUG]
