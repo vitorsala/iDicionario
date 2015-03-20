@@ -248,7 +248,7 @@
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info{
     [_imgPicker dismissViewControllerAnimated:YES completion:nil];
     UIImage *img = [info objectForKey:UIImagePickerControllerEditedImage];
-    _imgPhoto.image = img;
+    [dictionary saveImage:img Named:[NSString stringWithFormat:@"user_%c",_letter] forLetter:_letter];
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker{

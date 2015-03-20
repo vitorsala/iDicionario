@@ -18,6 +18,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    NSLog(@"%@",[[NSBundle mainBundle] pathForResource:@"A" ofType:@"png" inDirectory:@"Images.xcassets"]);
+
     self.navigationController.viewControllers = @[self];
 
     self.view.backgroundColor = [UIColor whiteColor];

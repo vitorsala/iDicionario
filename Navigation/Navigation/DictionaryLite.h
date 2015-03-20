@@ -31,6 +31,6 @@
 
 #pragma mark - Métodos para salvar imagens
 
--(void)saveImage:(UIImage *)image Named:(NSString*)name;
+-(void)saveImage:(UIImage *)image Named:(NSString*)name forLetter:(char)letter;
 
 @end

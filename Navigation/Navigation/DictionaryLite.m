@@ -95,10 +95,13 @@ static DictionaryLite* instance;
 
 -(UIImage *)getImageWithKey:(char) c{
     RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"letter='%c'",c]];
-    for(Word *obj in result){
-        if([obj.letter characterAtIndex:0] == c) return [UIImage imageNamed:obj.img];
+    Word *obj = [result firstObject];
+    NSString *imgPath = obj.img;
+    UIImage *img = [UIImage imageWithData:[NSData dataWithContentsOfFile:imgPath]];
+    if(img == nil){
+        img = [UIImage imageNamed:obj.img];
     }
-    return nil;
+    return img;
 }
 
 -(BOOL)searchWord: (NSString *)word{
@@ -110,25 +113,33 @@ static DictionaryLite* instance;
 }
 
 -(void)changeInfosForLetter:(char)letter withString:(NSString *)string andImageNamed:(NSString *)img{
-
     RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"letter='%c'",letter]];
     for(Word *obj in result){
         if([obj.letter characterAtIndex:0] == letter){
             [_realm beginWriteTransaction];
             if(string != nil && ![string isEqualToString:@""]) obj.palavra = string;
-//            if(string != nil && ![img isEqualToString:@""]) obj.img = img;
             [_realm commitWriteTransaction];
         };
     }
 
 }
 
-
--(void)saveImage:(UIImage *)image Named:(NSString*)name{
+-(void)saveImage:(UIImage *)image Named:(NSString*)name forLetter:(char)letter{
     name = [NSString stringWithFormat:@"%@.png", name];
 
-    
-	
+    NSArray *availablePaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [[availablePaths firstObject] stringByAppendingPathComponent:name];
+
+    NSData *data = UIImagePNGRepresentation(image);
+
+    [data writeToFile:path atomically:YES];
+
+    RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"letter='%c'",letter]];
+    Word *obj = [result firstObject];
+
+    [_realm beginWriteTransaction];
+    obj.img = path;
+    [_realm commitWriteTransaction];
 }
 
 
