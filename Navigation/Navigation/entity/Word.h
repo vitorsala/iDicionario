@@ -14,6 +14,7 @@
 @property NSString* letter;
 @property NSString* palavra;
 @property NSString* img;
+@property NSDate* date;
 
 
 @end

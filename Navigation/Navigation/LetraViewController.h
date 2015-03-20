@@ -29,13 +29,18 @@
 @property UIBarButtonItem* btnEdit;
 @property UIBarButtonItem* home;
 
-#pragma makr - ImagePicker
+#pragma mark - ImagePicker
 @property UIBarButtonItem* btnPhoto;
 @property UIBarButtonItem* btnImage;
 @property UIImagePickerController* imgPicker;
 
+#pragma mark - DatePicker
+@property UIDatePicker *datePicker;
+@property UILabel *date;
+
 #pragma mark - OutrasPropriedades
 @property char letter;
+@property CGFloat lastScale;
 
 @property AVSpeechSynthesizer* synt;
 @property AVSpeechUtterance* utter;

@@ -72,8 +72,8 @@ static DictionaryLite* instance;
         Word *word = [[Word alloc]init];
         word.letter = [NSString stringWithFormat:@"%c",c++];
         word.palavra = [dictionary objectAtIndex:i];
-//        word.img = [[NSBundle mainBundle] pathForResource:[images objectAtIndex:i] ofType:@"png"];
         word.img = [images objectAtIndex:i];
+        word.date = [[NSDate alloc]init];
 
         [_realm beginWriteTransaction];
         [_realm addObject:word];
@@ -104,7 +104,14 @@ static DictionaryLite* instance;
     return img;
 }
 
--(BOOL)searchWord: (NSString *)word{
+-(NSDate *)getDateWithKey:(char) c{
+    RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"letter='%c'",c]];
+    Word *obj = [result firstObject];
+    
+    return obj.date;
+}
+
+-(BOOL)searchWord:(NSString *)word{
     if(word || ![word isEqualToString:@""]){   // se palavra não for nulo
         RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"palavra CONTAINS '%@\'",word]];
         return [result firstObject];
@@ -112,12 +119,13 @@ static DictionaryLite* instance;
     return false;
 }
 
--(void)changeInfosForLetter:(char)letter withString:(NSString *)string andImageNamed:(NSString *)img{
+-(void)changeInfosForLetter:(char)letter withString:(NSString *)string andDate:(NSDate *)date{
     RLMResults *result = [Word objectsWhere:[NSString stringWithFormat:@"letter='%c'",letter]];
     for(Word *obj in result){
         if([obj.letter characterAtIndex:0] == letter){
             [_realm beginWriteTransaction];
             if(string != nil && ![string isEqualToString:@""]) obj.palavra = string;
+            if(date != nil) obj.date = date;
             [_realm commitWriteTransaction];
         };
     }
@@ -141,23 +149,5 @@ static DictionaryLite* instance;
     obj.img = path;
     [_realm commitWriteTransaction];
 }
-
-
-/**
- *  Dicionário placeholder (caso não haja um definido) [DEBUG]
- */
-//-(void)placeholderDicitionary{
-//    NSMutableArray *arr1 = [[NSMutableArray alloc] initWithCapacity:26];
-//    NSMutableArray *arr2 = [[NSMutableArray alloc] initWithCapacity:26];
-//    char c = 'A';
-//    for (int i = 0; i < 26; i++) {
-//        [arr1 addObject:[NSString stringWithFormat:@"%c palavra",c]];
-//        [arr2 addObject:@"placeholder.jpg"];
-//        c++;
-//    }
-//    _dictionary = arr1;
-//    _images = arr2;
-//    
-//}
 
 @end

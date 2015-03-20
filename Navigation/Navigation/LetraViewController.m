@@ -84,6 +84,9 @@
     [self.view addGestureRecognizer:swipeRight];
     [self.view addGestureRecognizer:swipeLeft];
 
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]initWithTarget:self action:@selector(pinchGesture:)];
+    [_imgPhoto addGestureRecognizer:pinchGesture];
+
     // Botão (Palavra)
     _palavra = [UIButton buttonWithType:UIButtonTypeSystem];
     [_palavra setTitle:@"Play" forState:UIControlStateNormal];
@@ -103,6 +106,20 @@
     _imgPicker = [[UIImagePickerController alloc] init];
     _imgPicker.delegate = self;
     _imgPicker.allowsEditing = YES;
+
+    // DatePicker
+    _datePicker = [[UIDatePicker alloc]initWithFrame:CGRectMake(0, self.view.bounds.size.height-200, self.view.bounds.size.width, 150)];
+    [_datePicker addTarget:self action:nil forControlEvents:UIControlEventValueChanged];
+    [_datePicker setDatePickerMode:UIDatePickerModeDate];
+    _datePicker.hidden = YES;
+    [self.view addSubview:_datePicker];
+
+    _date = [[UILabel alloc]initWithFrame:CGRectMake(0, self.view.bounds.size.height-150, self.view.bounds.size.width, 50)];
+    _date.textAlignment = NSTextAlignmentCenter;
+    _date.textColor = [UIColor colorWithRed:0.7 green:0.1 blue:0.1 alpha:1];
+    _date.font = [UIFont fontWithName:@"Arial-BoldMT" size:20];
+    [self.view addSubview:_date];
+
 
     // ToolBar
     _toolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 60, self.view.bounds.size.width, 50)];
@@ -146,6 +163,11 @@
     _imgPhoto.transform = CGAffineTransformIdentity;
     _imgPhoto.alpha = 0;
     _imgPhoto.image = [dictionary getImageWithKey:_letter];
+
+    // Set da data
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    [formatter setDateFormat:@"dd/MM/YYYY"];
+    _date.text = [formatter stringFromDate:[dictionary getDateWithKey:_letter]];
 
     // Executa a animação do início
     [self animate];
@@ -206,6 +228,16 @@
 }
 
 /**
+ *  Observer de gesture de pincher
+ *
+ *  @param sender UIPinchGestureRecognizer
+ */
+-(void)pinchGesture:(UIPinchGestureRecognizer *)sender{
+    _imgPhoto.transform = CGAffineTransformScale(_imgPhoto.transform, sender.scale, sender.scale);
+    sender.scale = 1;
+}
+
+/**
  *  Gesture de swipe para troca de tela
  *
  *  @param gesture
@@ -262,14 +294,29 @@
     if([btn.title isEqualToString:@"Editar"]){
         _palavra.hidden = YES;
         _txtEdit.hidden = NO;
+
+        _date.hidden = YES;
+        _datePicker.hidden = NO;
+
         _btnEdit.title = @"Concluir";
     }
     else{
         [_palavra setTitle:_txtEdit.text forState:UIControlStateNormal];
-//        [_palavra.titleLabel sizeToFit];
-        [dictionary changeInfosForLetter:_letter withString:_txtEdit.text andImageNamed:nil];
         _palavra.hidden = NO;
         _txtEdit.hidden = YES;
+
+        _date.hidden = NO;
+        _datePicker.hidden = YES;
+
+
+        NSDate *date = _datePicker.date;
+        // Set da data Nova
+        NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+        [formatter setDateFormat:@"dd/MM/YYYY"];
+        _date.text = [formatter stringFromDate:date];
+
+        [dictionary changeInfosForLetter:_letter withString:_txtEdit.text andDate:date];
+
         [self.view endEditing:YES];
         _btnEdit.title = @"Editar";
     }

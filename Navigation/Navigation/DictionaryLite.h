@@ -23,7 +23,9 @@
 
 -(UIImage *)getImageWithKey:(char) c;
 
--(void)changeInfosForLetter:(char)letter withString:(NSString *)string andImageNamed:(NSString *)img;
+-(NSDate *)getDateWithKey:(char) c;
+
+-(void)changeInfosForLetter:(char)letter withString:(NSString *)string andDate:(NSDate *)date;
 
 -(BOOL)searchWord: (NSString *)word;
 
