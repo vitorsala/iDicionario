@@ -60,19 +60,19 @@ static DictionaryLite* instance;
         @"Zebra"
     ];
 
-    NSMutableArray *images = [[NSMutableArray alloc]init];
+//    NSMutableArray *images = [[NSMutableArray alloc]init];
+//    char c = 'A';
+//    for (int i = 0; i < 26; i++) {
+//        [images addObject:[NSString stringWithFormat:@"%c.png",c]];
+//        c++;
+//    }
     char c = 'A';
-    for (int i = 0; i < 26; i++) {
-        [images addObject:[NSString stringWithFormat:@"%c.png",c]];
-        c++;
-    }
-    c = 'A';
 
     for(int i = 0; i < [dictionary count]; i++){
         Word *word = [[Word alloc]init];
         word.letter = [NSString stringWithFormat:@"%c",c++];
         word.palavra = [dictionary objectAtIndex:i];
-        word.img = [images objectAtIndex:i];
+        word.img = [NSString stringWithFormat:@"%c.png",c];
         word.date = [[NSDate alloc]init];
 
         [_realm beginWriteTransaction];
